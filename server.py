@@ -18,7 +18,6 @@ class SimpleLogger(LineReceiver):
             list.pop(list.index(self.transport))
             print 'remove from list'
         if self.transport in fdict.values():
-	    print tdict
 	    fdict.pop(tdict.get(self.transport))
             print 'remove from fdict'
 	if self.transport in listzhuzhan:
@@ -103,7 +102,7 @@ class SimpleLogger(LineReceiver):
 					self.transport.write(item)
 				self.printout(a,1)'''
 			else :
-				if int(data[6].encode('hex'))&0x0f==9:
+				if int(data[6].encode('hex')，16)&0x0f==0x09:
                                 	self.printout(data,0)
 					self.transport.write(data)
 					self.printout(data,1)
