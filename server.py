@@ -6,7 +6,7 @@ list=[]
 fdict=dict()
 tdict=dict()
 listzhuzhan=[]
-rdict=dict()
+rdict={}
 
 class SimpleLogger(LineReceiver):
 
@@ -40,7 +40,8 @@ class SimpleLogger(LineReceiver):
 				self.printout(data,0)
 				print 'write to',addr
 				fdict.get(addr).write(data[8:len(data)])
-				rdict[addr]=self.transport
+				#rdict[addr]=self.transport
+				rdict.setdefault(addr,[]).append(self.transport)
 				self.printout(data[8:len(data)],1)
 				break
 			else:
@@ -102,15 +103,19 @@ class SimpleLogger(LineReceiver):
 					self.transport.write(item)
 				self.printout(a,1)'''
 			else :
-				if int(data[6].encode('hex')，16)&0x0f==0x09:
+				if int(data[6].encode('hex'),16)&0x0f==0x09:
                                 	self.printout(data,0)
 					self.transport.write(data)
 					self.printout(data,1)
 				else:
 					self.printout(data,0)
 					address=str(data[8].encode('hex'))+str(data[7].encode('hex'))+str(int(data[9].encode('hex'),16)+int(data[10].encode('hex'),16)*256)
-					rdict.get(address).write(data)
+					#print rdict.get(self.tranport.client)
+					for i in rdict.get(address):
+						i.write(data)
 					rdict.pop(address)
+					#rdict.get(address).write(data)
+					#rdict.pop(address)
 					print 'remove from rdict'
 					self.printout(data,1)
 
