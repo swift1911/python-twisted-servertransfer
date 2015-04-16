@@ -111,13 +111,15 @@ class SimpleLogger(LineReceiver):
 					self.printout(data,0)
 					address=str(data[8].encode('hex'))+str(data[7].encode('hex'))+str(int(data[9].encode('hex'),16)+int(data[10].encode('hex'),16)*256)
 					#print rdict.get(self.tranport.client)
-					for i in rdict.get(address):
-						i.write(data)
-					rdict.pop(address)
-					#rdict.get(address).write(data)
-					#rdict.pop(address)
-					print 'remove from rdict'
-					self.printout(data,1)
+					temp=rdict.get(address)
+					if len(rdict)!=0:
+						for i in range(0,len(temp)):
+							temp[i].write(data)
+						rdict.pop(address)
+						print 'remove from rdict'
+						self.printout(data,1)
+					else:
+						print 'package has been dropped'
 
 	else:
 		#self.transport.write(data)
